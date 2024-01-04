@@ -68,7 +68,11 @@ export class ViewDepCode implements vscode.WebviewViewProvider {
   }
 
   public async getProjectDeps(path:string) {
-    const panel = vscode.window.createWebviewPanel(ViewDepCode.viewType, "项目依赖详情", -1, getWebviewOptions(this._extensionUri),);
+    const panel = vscode.window.createWebviewPanel(ViewDepCode.viewType, "项目依赖详情", -1, 
+      {
+        ...getWebviewOptions(this._extensionUri),
+        retainContextWhenHidden: true
+      });
     panel.webview.html = this._getHtmlForWebview(panel.webview);
 
     const pkgJson = await loadJson(path);
