@@ -19,11 +19,30 @@ tr:nth-child(even) {
 }
 
 .action-link {
+  display: inline-block;
+  width: 70px;
 	cursor: pointer;
+  text-align: center;
 	color: #6c86dc;
 	font-size: 14px;
 }
 
 .margin-left-10 {
   margin-left: 10px;
+}
+
+@keyframes spin {  
+  0% { color: #726e6e; }  
+  100% { color: #fff; }  
+}  
+
+.loading::after {
+	content:  "...";
+}
+
+.loading {
+	pointer-events: none;
+  cursor: none;
+  animation: spin 1s linear infinite;     
+  font-size: 12px; 
 }

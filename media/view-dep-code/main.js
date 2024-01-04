@@ -17,7 +17,7 @@
       item.action = 'actionFlag';
       const trEle = document.createElement('tr');  
       const tdEle = document.createElement('td');
-      tdEle.textContent = index;
+      tdEle.textContent = index + 1;
       trEle.appendChild(tdEle);
 
       const keysArr = Object.keys(item);
@@ -37,6 +37,7 @@
           updateEle.className = 'action-link margin-left-10';
           updateEle.addEventListener('click', function() {
             actionDepSourceCode(item, 'update');
+            updateEle.className = 'action-link margin-left-10 loading';
           });
           updateEle.textContent="更新";
           tdEle.appendChild(updateEle);
@@ -44,6 +45,7 @@
           const deleteEle = document.createElement('span');
           deleteEle.className = 'action-link margin-left-10';
           deleteEle.addEventListener('click', function() {
+            updateEle.className = 'action-link margin-left-10 loading';
             actionDepSourceCode(item, 'delete');
           });
           deleteEle.textContent="删除";
