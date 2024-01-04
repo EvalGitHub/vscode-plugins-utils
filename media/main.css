@@ -1,0 +1,29 @@
+body {
+	background-color: transparent;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #30343E;
+}
+
+.action-link {
+	cursor: pointer;
+	color: #6c86dc;
+	font-size: 14px;
+}
+
+.margin-left-10 {
+  margin-left: 10px;
+}

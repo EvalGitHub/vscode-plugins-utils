@@ -1,0 +1,66 @@
+{
+  "name": "vscode-plugin-utils",
+  "displayName": "vscode-plugin-utils",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "view-project-dep-source-code",
+        "title": "查看详情",
+        "category": "project-dep"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "group": "project-dep/view",
+          "when": "resourceFilename==package.json",
+          "submenu": "project-dep"
+        }
+      ],
+      "project-dep": [
+        {
+          "command": "view-project-dep-source-code",
+          "group": "project-dep/view"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "project-dep",
+        "label": "项目依赖包"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.8"
+  },
+  "dependencies": {
+    "fs-extra": "^11.2.0"
+  }
+}
