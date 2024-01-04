@@ -2,7 +2,8 @@
   "name": "vscode-plugin-utils",
   "displayName": "vscode-plugin-utils",
   "description": "",
-  "version": "0.0.1",
+  "publisher": "evel-vscode-plugins",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -15,30 +16,20 @@
     "commands": [
       {
         "command": "view-project-dep-source-code",
-        "title": "查看详情",
-        "category": "project-dep/view"
+        "title": "项目依赖"
       }
     ],
     "menus": {
       "explorer/context": [
         {
           "when": "resourceFilename==package.json",
-          "submenu": "project-dep"
-        }
-      ],
-      "project-dep": [
-        {
           "command": "view-project-dep-source-code",
-          "group": "project-dep/view"
+          "group": "project-dep"
         }
       ]
-    },
-    "submenus": [
-      {
-        "id": "project-dep",
-        "label": "项目依赖包"
-      }
-    ]
+    }
+
+   
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -62,7 +53,8 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "fs-extra": "^11.2.0"
+    "fs-extra": "^11.2.0",
+    "which": "^4.0.0"
   },
   "repository": "https://github.com/EvalGitHub/vscode-plugins-utils.git"
 }
