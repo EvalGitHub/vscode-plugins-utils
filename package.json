@@ -3,7 +3,8 @@
   "displayName": "vscode-plugin-utils",
   "description": "",
   "publisher": "evel-vscode-plugins",
-  "version": "0.0.4",
+  "icon": "image/help_panel_tool_fail.png",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.85.0"
   },
