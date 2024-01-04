@@ -16,13 +16,12 @@
       {
         "command": "view-project-dep-source-code",
         "title": "查看详情",
-        "category": "project-dep"
+        "category": "project-dep/view"
       }
     ],
     "menus": {
       "explorer/context": [
         {
-          "group": "project-dep/view",
           "when": "resourceFilename==package.json",
           "submenu": "project-dep"
         }
@@ -62,5 +61,6 @@
   },
   "dependencies": {
     "fs-extra": "^11.2.0"
-  }
+  },
+  "repository": "https://github.com/EvalGitHub/vscode-plugins-utils.git"
 }
