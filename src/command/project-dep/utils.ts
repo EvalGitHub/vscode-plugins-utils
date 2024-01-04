@@ -1,5 +1,6 @@
 import fsExtra from 'fs-extra';
 import * as vscode from 'vscode';
+import which from 'which';
 import {spawnSync, exec} from 'child_process';
 
 export function loadJson(filepath:string) {
@@ -52,6 +53,18 @@ export function viewDepSourceCode(
   });
 }
 
+export function getNpmOrTnpm() {
+  let targetNpm = '';
+  try {
+    // 使用which模块检查命令是否存在
+    which.sync("tnpm");
+    targetNpm = "tnpm";
+  } catch (error) {
+    targetNpm = "npm";
+  }
+  return targetNpm;
+}
+
 export async function updateDep( path:string,
   depItem:any,
   cwd:string, 
@@ -65,11 +78,11 @@ export async function updateDep( path:string,
     //   cwd,
     //   stdio: 'inherit'
     // });
-    exec(`tnpm update ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
+    exec(`${getNpmOrTnpm()} update ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
       if (error) {
-        vscode.window.showErrorMessage(`执行 tnpm update ${isDev} ${depItem.value.name} 失败！`);
+        vscode.window.showErrorMessage(`执行 ${getNpmOrTnpm()} update ${isDev} ${depItem.value.name} 失败！`);
       } else {
-        vscode.window.showInformationMessage(`执行 tnpm update ${isDev} ${depItem.value.name} 成功！`);
+        vscode.window.showInformationMessage(`执行 ${getNpmOrTnpm()} update ${isDev} ${depItem.value.name} 成功！`);
         callFun && callFun();
       }
     });
@@ -88,11 +101,11 @@ export function deleteDep(
       cwd,
       stdio: 'inherit'
     }); */
-    exec(`tnpm uninstall ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
+    exec(`${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
       if (error) {
-        vscode.window.showErrorMessage(`执行 tnpm uninstall ${isDev} ${depItem.value.name} 失败！`);
+        vscode.window.showErrorMessage(`执行 ${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name} 失败！`);
       } else {
-        vscode.window.showInformationMessage(`执行 tnpm uninstall ${isDev} ${depItem.value.name} 成功！`);
+        vscode.window.showInformationMessage(`执行 ${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name} 成功！`);
         callFun && callFun();
       }
     });
