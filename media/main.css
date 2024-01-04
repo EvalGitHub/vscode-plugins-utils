@@ -1,0 +1,48 @@
+body {
+	background-color: transparent;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #30343E;
+}
+
+.action-link {
+  display: inline-block;
+  width: 60px;
+	cursor: pointer;
+  text-align: left;
+	color: #6c86dc;
+	font-size: 14px;
+}
+
+.margin-left-10 {
+  margin-left: 10px;
+}
+
+@keyframes spin {  
+  0% { color: #726e6e; }  
+  100% { color: #fff; }  
+}  
+
+.loading::after {
+	content:  "...";
+}
+
+.loading {
+	pointer-events: none;
+  cursor: none;
+  animation: spin 1s linear infinite;     
+  font-size: 12px; 
+}
