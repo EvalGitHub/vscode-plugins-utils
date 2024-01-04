@@ -20,9 +20,9 @@ tr:nth-child(even) {
 
 .action-link {
   display: inline-block;
-  width: 70px;
+  width: 60px;
 	cursor: pointer;
-  text-align: center;
+  text-align: left;
 	color: #6c86dc;
 	font-size: 14px;
 }
