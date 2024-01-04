@@ -1,6 +1,6 @@
 // 查看项目依赖源码
 import * as vscode from 'vscode';
-import {loadJson, handleDep, createDepTable,viewDepSourceCode}  from './utils';
+import {loadJson, handleDep, createDepTable,viewDepSourceCode, updateDep,deleteDep}  from './utils';
 
 function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
 	return {
@@ -13,16 +13,18 @@ function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
 
 export class ViewDepCode implements vscode.WebviewViewProvider {
   public static readonly viewType = 'view.depCode';
-
-  private _view?: vscode.WebviewView;
+  private dirPath:string;
+  // private _view?: vscode.WebviewView;
+  private _webPanelView?:vscode.WebviewPanel;
 
 	constructor(
 		private readonly _extensionUri: vscode.Uri,
 	) { 
+    this.dirPath = '';
   }
 
   public resolveWebviewView(webviewView: vscode.WebviewView, context: vscode.WebviewViewResolveContext<unknown>, token: vscode.CancellationToken): void | Thenable<void> {
-    this._view = webviewView;
+    // this._view = webviewView;
     webviewView.webview.options = getWebviewOptions(this._extensionUri);
 		webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
   }
@@ -54,13 +56,16 @@ export class ViewDepCode implements vscode.WebviewViewProvider {
       <title>deps detail</title>
     </head>
     <body>
-      <table class="content-note">
+      <table>
         <tr>
+          <th width="100">序号</th>
           <th width="150">来源</th>
           <th width="150">版本</th>
           <th>依赖名</th>
           <th>操作</th>
         </tr>
+        <tbody class="content-note">
+        </tbody>
       </table>
       <script nonce="${nonce}" src="${scriptUri}"></script>
     </body>
@@ -68,39 +73,47 @@ export class ViewDepCode implements vscode.WebviewViewProvider {
   }
 
   public async getProjectDeps(path:string) {
-    const panel = vscode.window.createWebviewPanel(ViewDepCode.viewType, "项目依赖详情", -1, 
+    this.dirPath = path;
+    this._webPanelView = vscode.window.createWebviewPanel(ViewDepCode.viewType, "项目依赖详情", -1, 
       {
         ...getWebviewOptions(this._extensionUri),
         retainContextWhenHidden: true
       });
-    panel.webview.html = this._getHtmlForWebview(panel.webview);
+    this._webPanelView.webview.html = this._getHtmlForWebview(this._webPanelView.webview);
+    this.painPanel();
+    this._webPanelView.webview.onDidReceiveMessage(data => {
+      handleAction(data, path, this.successCallback.bind(this));
+		});
+  }
 
+  public async successCallback() {
+    // 重新更新视图
+    this.painPanel();
+  }
+
+  public async painPanel()  {
+    const path = this.dirPath;
     const pkgJson = await loadJson(path);
     const depList = handleDep(pkgJson);
     const depContent = createDepTable(depList);
-    panel.webview.postMessage({
-      type: "depContent",
-      data: depContent
-    });
-
-    panel.webview.onDidReceiveMessage(data => {
-			switch (data.type) {
-        case "viewDetail": 
-          viewDetail(data, path);
-          break;
-				/* case 'colorSelected':
-					{
-						vscode.window.activeTextEditor?.insertSnippet(new vscode.SnippetString(`#${data.value}`));
-						break;
-					} */
-			}
-		});
+    if (this._webPanelView) {
+      this._webPanelView.webview.postMessage({
+        type: "depContent",
+        data: depContent
+      });
+    }
   }
 }
 
-function viewDetail(data:any, pkgPath:string)  {
+function handleAction(data:any, pkgPath:string, callFun:() => void)  {
   const dirPath = pkgPath.split("package.json")[0];
-  viewDepSourceCode(dirPath + "node_modules", data.value.name, dirPath);
+  if (data.type === 'view') {
+    viewDepSourceCode(dirPath + "node_modules", data.value.name, dirPath);
+  } else if (data.type === 'update') {
+    updateDep(dirPath + "node_modules", data, dirPath, callFun);
+  } else if (data.type  === 'delete') {
+    deleteDep(dirPath + "node_modules", data, dirPath , callFun);
+  }
 }
 
 function getNonce() {

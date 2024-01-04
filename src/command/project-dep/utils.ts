@@ -1,6 +1,6 @@
 import fsExtra from 'fs-extra';
 import * as vscode from 'vscode';
-import {spawnSync} from 'child_process';
+import {spawnSync, exec} from 'child_process';
 
 export function loadJson(filepath:string) {
   if (!fsExtra.existsSync(filepath)) {
@@ -50,4 +50,50 @@ export function viewDepSourceCode(
     cwd,
     stdio: 'inherit'
   });
+}
+
+export async function updateDep( path:string,
+  depItem:any,
+  cwd:string, 
+  callFun:() => void) {
+    depItem.value.name;
+    if (!fsExtra.existsSync(path)) {
+      return vscode.window.showErrorMessage('node_modules不存在，请先安装依赖!');
+    }
+    const isDev = depItem.value.tag === 'devDependencies' ? '-S' : '';
+    // spawnSync("tnpm", ['update' ,isDev, depItem.value.name], {
+    //   cwd,
+    //   stdio: 'inherit'
+    // });
+    exec(`tnpm update ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
+      if (error) {
+        vscode.window.showErrorMessage(`执行 tnpm update ${isDev} ${depItem.value.name} 失败！`);
+      } else {
+        vscode.window.showInformationMessage(`执行 tnpm update ${isDev} ${depItem.value.name} 成功！`);
+        callFun && callFun();
+      }
+    });
+}
+
+export function deleteDep(
+  path:string,
+  depItem:any,
+  cwd:string,
+  callFun:() => void) {
+    if (!fsExtra.existsSync(path)) {
+      return vscode.window.showErrorMessage('node_modules不存在，请先安装依赖!');
+    }
+    const isDev = depItem.value.tag === 'devDependencies' ? '-D' : '';
+  /*   spawnSync("tnpm", ['uninstall', isDev ,depItem.value.name ], {
+      cwd,
+      stdio: 'inherit'
+    }); */
+    exec(`tnpm uninstall ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
+      if (error) {
+        vscode.window.showErrorMessage(`执行 tnpm uninstall ${isDev} ${depItem.value.name} 失败！`);
+      } else {
+        vscode.window.showInformationMessage(`执行 tnpm uninstall ${isDev} ${depItem.value.name} 成功！`);
+        callFun && callFun();
+      }
+    });
 }
