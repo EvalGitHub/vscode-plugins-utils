@@ -35,6 +35,11 @@ export function handleDep(pkgJson:any) {
   return depListTmp;
 }
 
+export function getDepItemByPksJon(depName:string, pkgJson:any) {
+  const pkgJSONDepObj = {...pkgJson.dependencies, ...pkgJson.devDependencies};
+  return pkgJSONDepObj[depName];
+}
+
 export function createDepTable(depList:Array<any>, ) {
   return depList;
 }
@@ -68,7 +73,7 @@ export function getNpmOrTnpm() {
 export async function updateDep( path:string,
   depItem:any,
   cwd:string, 
-  callFun:() => void) {
+  callFun:(item:any, status:string) => void) {
     depItem.value.name;
     if (!fsExtra.existsSync(path)) {
       return vscode.window.showErrorMessage('node_modules不存在，请先安装依赖!');
@@ -78,12 +83,16 @@ export async function updateDep( path:string,
     //   cwd,
     //   stdio: 'inherit'
     // });
+    depItem.isUpdating = true;
+    callFun && callFun(depItem, 'handling');
     exec(`${getNpmOrTnpm()} update ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
+      depItem.isUpdating = false;
       if (error) {
+        callFun && callFun(depItem, 'fail');
         vscode.window.showErrorMessage(`执行 ${getNpmOrTnpm()} update ${isDev} ${depItem.value.name} 失败！`);
       } else {
         vscode.window.showInformationMessage(`执行 ${getNpmOrTnpm()} update ${isDev} ${depItem.value.name} 成功！`);
-        callFun && callFun();
+        callFun && callFun(depItem, 'success');
       }
     });
 }
@@ -92,7 +101,7 @@ export function deleteDep(
   path:string,
   depItem:any,
   cwd:string,
-  callFun:() => void) {
+  callFun:(item:any, status:string) => void) {
     if (!fsExtra.existsSync(path)) {
       return vscode.window.showErrorMessage('node_modules不存在，请先安装依赖!');
     }
@@ -101,12 +110,16 @@ export function deleteDep(
       cwd,
       stdio: 'inherit'
     }); */
+    depItem.isDeleting = true;
+    callFun && callFun(depItem, 'handling');
     exec(`${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
+      depItem.isDeleting = false;
       if (error) {
         vscode.window.showErrorMessage(`执行 ${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name} 失败！`);
+        callFun && callFun(depItem, 'fail');
       } else {
         vscode.window.showInformationMessage(`执行 ${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name} 成功！`);
-        callFun && callFun();
+        callFun && callFun(depItem, 'success');
       }
     });
 }

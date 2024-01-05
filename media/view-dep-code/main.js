@@ -20,11 +20,14 @@
       tdEle.textContent = index + 1;
       trEle.appendChild(tdEle);
 
-      const keysArr = Object.keys(item);
+      const keysArr = ['tag', 'version', 'name'];
       keysArr.forEach((cellKey, cellIndex) => {
         if (cellIndex === keysArr.length -1) { // 检查是否是最后一列  
+          const contentEle = document.createElement('td');
+          contentEle.textContent = item[cellKey];
+          trEle.appendChild(contentEle);
+
           const tdEle = document.createElement('td');
-         
           const viewEle = document.createElement('span');
           viewEle.className = 'action-link';
           viewEle.addEventListener('click', function() {
@@ -34,18 +37,30 @@
           tdEle.appendChild(viewEle);
 
           const updateEle = document.createElement('span');
-          updateEle.className = 'action-link margin-left-10';
+          if (item && item.isDeleting) { // 更新时候不允许删除
+            updateEle.className = 'action-link margin-left-10 disable-action';
+          } else if (item && item.isUpdating) {
+            updateEle.className = 'action-link margin-left-10 loading';
+          } else {
+            updateEle.className = 'action-link margin-left-10';
+          }
           updateEle.addEventListener('click', function() {
             actionDepSourceCode(item, 'update');
-            updateEle.className = 'action-link margin-left-10 loading';
+            // updateEle.className = 'action-link margin-left-10 loading';
           });
           updateEle.textContent="更新";
           tdEle.appendChild(updateEle);
 
           const deleteEle = document.createElement('span');
-          deleteEle.className = 'action-link margin-left-10';
-          deleteEle.addEventListener('click', function() {
+          if (item && item.isUpdating) { // 更新时候不允许删除
+            deleteEle.className = 'action-link margin-left-10 disable-action';
+          } else if (item && item.isDeleting) {
             deleteEle.className = 'action-link margin-left-10 loading';
+          } else {
+            deleteEle.className = 'action-link margin-left-10';
+          }
+          deleteEle.addEventListener('click', function() {
+            // deleteEle.className = 'action-link margin-left-10 loading';
             actionDepSourceCode(item, 'delete');
           });
           deleteEle.textContent="删除";

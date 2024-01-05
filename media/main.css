@@ -46,3 +46,9 @@ tr:nth-child(even) {
   animation: spin 1s linear infinite;     
   font-size: 12px; 
 }
+
+.disable-action {
+  pointer-events: none;
+  cursor: none;
+  opacity: 0.8;
+}
