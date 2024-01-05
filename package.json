@@ -4,7 +4,7 @@
   "description": "",
   "publisher": "evel-vscode-plugins",
   "icon": "image/help_panel_tool_fail.png",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -29,8 +29,6 @@
         }
       ]
     }
-
-   
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -50,7 +48,6 @@
     "@typescript-eslint/parser": "^6.15.0",
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.8",
-    "eslint": "^8.56.0",
     "typescript": "^5.3.3"
   },
   "dependencies": {

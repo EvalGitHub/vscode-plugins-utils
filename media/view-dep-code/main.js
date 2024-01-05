@@ -45,7 +45,7 @@
           const deleteEle = document.createElement('span');
           deleteEle.className = 'action-link margin-left-10';
           deleteEle.addEventListener('click', function() {
-            updateEle.className = 'action-link margin-left-10 loading';
+            deleteEle.className = 'action-link margin-left-10 loading';
             actionDepSourceCode(item, 'delete');
           });
           deleteEle.textContent="删除";
