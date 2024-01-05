@@ -4,7 +4,7 @@
 
 ## 依赖包管理
 
-工程项目安装完依赖之后，选中package.json文件， 右键 “项目依赖包”
+工程项目安装完依赖之后，选中package.json文件， 右键 “项目依赖”， 首次加载需要等待几秒钟...
 
 ![avatar](./image/dep-handle.png)
 
