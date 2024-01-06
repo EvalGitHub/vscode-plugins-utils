@@ -36,7 +36,7 @@ export class ViewDepCode implements vscode.WebviewViewProvider {
 		// Do the same for the stylesheet.
 		const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css'));
 		const styleVSCodeUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'vscode.css'));
-		const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'main.css'));
+		const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media/view-dep-code', 'dep.css'));
     return  `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -107,19 +107,19 @@ export class ViewDepCode implements vscode.WebviewViewProvider {
   }
 
   public async callback(item:any, status:string) {
-    console.log('item', item)
-    console.log('sta', status)
     if (status === 'success') {
       // 读取最新版本，更新文件信息
       const pkgJson = await loadJson(this.dirPath);
-      const depItem = getDepItemByPksJon(item?.value?.name, pkgJson);
-      this.depContent.forEach((val:any) => {
-        if (val.name === depItem.name && val.version === depItem.version) {
+      const depItem = getDepItemByPksJon(item?.value, pkgJson);
+      this.depContent.forEach((val:any, index:number) => {
+        if (val.name === depItem.name && val.tag === depItem.tag) {
+          if (item.isDeleting === 'success') {
+            this.depContent.splice(index, 1);
+          }
           val.version = depItem.version;
-        } else  if (val.name === item?.value?.name) {
           val.isUpdating = item.isUpdating;
           val.isDeleting = item.isDeleting;
-        }
+        } 
       })
     } else {
       this.depContent.forEach((val:any) => {

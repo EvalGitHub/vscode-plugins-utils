@@ -35,9 +35,21 @@ export function handleDep(pkgJson:any) {
   return depListTmp;
 }
 
-export function getDepItemByPksJon(depName:string, pkgJson:any) {
+export function getDepItemByPksJon(depItem:any, pkgJson:any) {
   const pkgJSONDepObj = {...pkgJson.dependencies, ...pkgJson.devDependencies};
-  return pkgJSONDepObj[depName];
+  if (depItem.tag === 'dependencies') {
+    return {
+      name: depItem.name,
+      tag: depItem.tag,
+      version: pkgJson.dependencies[depItem.name]
+    } 
+  } else {
+    return {
+      name: depItem.name,
+      tag: depItem.tag,
+      version: pkgJson.devDependencies[depItem.name]
+    } 
+  }
 }
 
 export function createDepTable(depList:Array<any>, ) {
@@ -83,14 +95,16 @@ export async function updateDep( path:string,
     //   cwd,
     //   stdio: 'inherit'
     // });
-    depItem.isUpdating = true;
+    depItem.isUpdating = "pending";
     callFun && callFun(depItem, 'handling');
     exec(`${getNpmOrTnpm()} update ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
       depItem.isUpdating = false;
       if (error) {
+        depItem.isUpdating = "failure";
         callFun && callFun(depItem, 'fail');
         vscode.window.showErrorMessage(`执行 ${getNpmOrTnpm()} update ${isDev} ${depItem.value.name} 失败！`);
       } else {
+        depItem.isUpdating = "success";
         vscode.window.showInformationMessage(`执行 ${getNpmOrTnpm()} update ${isDev} ${depItem.value.name} 成功！`);
         callFun && callFun(depItem, 'success');
       }
@@ -110,14 +124,15 @@ export function deleteDep(
       cwd,
       stdio: 'inherit'
     }); */
-    depItem.isDeleting = true;
+    depItem.isDeleting = "pending";
     callFun && callFun(depItem, 'handling');
     exec(`${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
-      depItem.isDeleting = false;
       if (error) {
+        depItem.isDeleting = "failure";
         vscode.window.showErrorMessage(`执行 ${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name} 失败！`);
         callFun && callFun(depItem, 'fail');
       } else {
+        depItem.isDeleting = "success";
         vscode.window.showInformationMessage(`执行 ${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name} 成功！`);
         callFun && callFun(depItem, 'success');
       }

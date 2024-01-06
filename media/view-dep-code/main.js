@@ -37,9 +37,9 @@
           tdEle.appendChild(viewEle);
 
           const updateEle = document.createElement('span');
-          if (item && item.isDeleting) { // 更新时候不允许删除
+          if (item && item.isDeleting === 'pending') { // 更新时候不允许删除
             updateEle.className = 'action-link margin-left-10 disable-action';
-          } else if (item && item.isUpdating) {
+          } else if (item && item.isUpdating === 'pending') {
             updateEle.className = 'action-link margin-left-10 loading';
           } else {
             updateEle.className = 'action-link margin-left-10';
@@ -52,9 +52,9 @@
           tdEle.appendChild(updateEle);
 
           const deleteEle = document.createElement('span');
-          if (item && item.isUpdating) { // 更新时候不允许删除
+          if (item && item.isUpdating === 'pending') { // 更新时候不允许删除
             deleteEle.className = 'action-link margin-left-10 disable-action';
-          } else if (item && item.isDeleting) {
+          } else if (item && item.isDeleting === 'pending') {
             deleteEle.className = 'action-link margin-left-10 loading';
           } else {
             deleteEle.className = 'action-link margin-left-10';
