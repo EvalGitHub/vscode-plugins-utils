@@ -36,19 +36,19 @@ export function handleDep(pkgJson:any) {
 }
 
 export function getDepItemByPksJon(depItem:any, pkgJson:any) {
-  const pkgJSONDepObj = {...pkgJson.dependencies, ...pkgJson.devDependencies};
+  // const pkgJSONDepObj = {...pkgJson.dependencies, ...pkgJson.devDependencies};
   if (depItem.tag === 'dependencies') {
     return {
       name: depItem.name,
       tag: depItem.tag,
       version: pkgJson.dependencies[depItem.name]
-    } 
+    }; 
   } else {
     return {
       name: depItem.name,
       tag: depItem.tag,
       version: pkgJson.devDependencies[depItem.name]
-    } 
+    }; 
   }
 }
 
@@ -90,13 +90,15 @@ export async function updateDep( path:string,
     if (!fsExtra.existsSync(path)) {
       return vscode.window.showErrorMessage('node_modules不存在，请先安装依赖!');
     }
-    const isDev = depItem.value.tag === 'devDependencies' ? '-S' : '';
+    const isDev = depItem.value.tag === 'devDependencies' ? '-D' : '-S';
     // spawnSync("tnpm", ['update' ,isDev, depItem.value.name], {
     //   cwd,
     //   stdio: 'inherit'
     // });
     depItem.isUpdating = "pending";
-    callFun && callFun(depItem, 'handling');
+    setTimeout(()=> {
+      callFun && callFun(depItem, 'handling');
+    }, 100);
     exec(`${getNpmOrTnpm()} update ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
       depItem.isUpdating = false;
       if (error) {
@@ -106,7 +108,9 @@ export async function updateDep( path:string,
       } else {
         depItem.isUpdating = "success";
         vscode.window.showInformationMessage(`执行 ${getNpmOrTnpm()} update ${isDev} ${depItem.value.name} 成功！`);
-        callFun && callFun(depItem, 'success');
+        setTimeout(()=> {
+          callFun && callFun(depItem, 'success');
+        }, 100);
       }
     });
 }
@@ -119,13 +123,15 @@ export function deleteDep(
     if (!fsExtra.existsSync(path)) {
       return vscode.window.showErrorMessage('node_modules不存在，请先安装依赖!');
     }
-    const isDev = depItem.value.tag === 'devDependencies' ? '-D' : '';
+    const isDev = depItem.value.tag === 'devDependencies' ? '' : '';
   /*   spawnSync("tnpm", ['uninstall', isDev ,depItem.value.name ], {
       cwd,
       stdio: 'inherit'
     }); */
     depItem.isDeleting = "pending";
-    callFun && callFun(depItem, 'handling');
+    setTimeout(()=> {
+      callFun && callFun(depItem, 'handling');
+    }, 100);
     exec(`${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
       if (error) {
         depItem.isDeleting = "failure";
@@ -134,7 +140,9 @@ export function deleteDep(
       } else {
         depItem.isDeleting = "success";
         vscode.window.showInformationMessage(`执行 ${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name} 成功！`);
-        callFun && callFun(depItem, 'success');
+        setTimeout(()=> {
+          callFun && callFun(depItem, 'success');
+        }, 100);
       }
     });
 }

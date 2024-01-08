@@ -120,14 +120,14 @@ export class ViewDepCode implements vscode.WebviewViewProvider {
           val.isUpdating = item.isUpdating;
           val.isDeleting = item.isDeleting;
         } 
-      })
+      });
     } else {
       this.depContent.forEach((val:any) => {
         if (val.name === item?.value?.name) {
           val.isUpdating = item.isUpdating;
           val.isDeleting = item.isDeleting;
         }
-      })
+      });
     }
     this.painPanel(this.depContent);
   }
