@@ -83,10 +83,10 @@ function App() {
 
   return (
     <Table scroll={{ x: 'max-content', y: "100vh" }} 
-    dataSource={dataSource} 
-    columns={columns}
-    pagination={false}
-    operate
+      dataSource={dataSource} 
+      columns={columns}
+      pagination={false}
+      operate
      />
   )
 }
