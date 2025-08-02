@@ -2,29 +2,6 @@ body {
 	background-color: transparent;
 }
 
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-
-
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #30343E;
-}
-
-tr:hover {
-  background-color: #0f338e;
-  /* cursor: pointer; */
-}
-
 .action-link {
   display: inline-block;
   width: 60px;
