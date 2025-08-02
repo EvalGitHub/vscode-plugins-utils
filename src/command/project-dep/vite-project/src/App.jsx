@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { useState } from 'react'
 import { Table,Button } from 'antd';
 import './App.css'
@@ -20,11 +21,6 @@ function App() {
   ]);
 
   const columns = [
-    // {
-    //   title: '序号',
-    //   dataIndex: 'number',
-    //   key: 'number',
-    // },
     {
       title: '来源',
       dataIndex: 'tag',
@@ -45,15 +41,15 @@ function App() {
       key: 'operation',
       fixed: 'right',
       width: 100,
-      render: () => <div className='button-group'>
+      render: (item) => <div className='button-group'>
         <Button  onClick={() => {
-          viewDepSourceCode(path, depItem.name, cwd);
+          actionDepSourceCode(item, 'view');
         }}>查看源码</Button>
-        <Button onClick={() => {
-          deleteDep(path, depItem, cwd, callback);
+        <Button loading={item.isDeleting === "pending"} onClick={() => {
+         actionDepSourceCode(item, 'delete');
         }}>删除</Button>
-        <Button onClick={() => {
-          updateDep(path, depItem, cwd, callback);
+        <Button loading={item.isUpdating === 'pending'} onClick={() => {
+         actionDepSourceCode(item, 'update');
         }}>更新</Button>
       </div>,
     },
@@ -61,6 +57,16 @@ function App() {
 
   function createDepTable(data) {
     setDataSource(data);
+  }
+
+  function actionDepSourceCode(item, action) {
+    // ✅ 安全检查
+    const vscode = acquireVsCodeApi();
+    if (typeof vscode !== 'undefined' && vscode.postMessage) {
+      vscode.postMessage({ type: action, value: item });
+    }  else {
+      console.warn('vscode 对象不可用，可能不在 VS Code 环境中');
+    }
   }
 
   useEffect(() => {
