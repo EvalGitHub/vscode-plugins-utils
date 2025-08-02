@@ -1,4 +1,4 @@
-@import 'vscode.css';
+@import '../vscode.css';
 @import 'dep.css';
 
 #root {

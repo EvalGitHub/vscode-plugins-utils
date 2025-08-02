@@ -34,25 +34,24 @@ export class ViewDepCode implements vscode.WebviewViewProvider {
 
   private _getHtmlForWebview(webview: vscode.Webview) {
     // Use a nonce to only allow a specific script to be run.
-		const nonce = getNonce();
-    let data = '';
     try {
-    // data = fs.readFileSync('./vite-project/dist/index.html','utf8');
-    const indexPath = vscode.Uri.joinPath(this._extensionUri, 'src', 'vite-project', 'dist', 'index.html');
-    let contentHtml = fs.readFileSync(indexPath.path, 'utf-8');
-    contentHtml = contentHtml.replace(/src="\/assets\//g, `src="${webview.asWebviewUri(vscode.Uri.file(
-      vscode.Uri.joinPath(this._extensionUri, 'src', 'vite-project', 'dist', 'assets').path
-    ))}/`);
-    contentHtml = contentHtml.replace(/href="\/assets\//g, `href="${webview.asWebviewUri(vscode.Uri.file(
-      vscode.Uri.joinPath(this._extensionUri, 'src', 'vite-project', 'dist', 'assets').path
-    ))}/`);
-
-      data = contentHtml;
+      // data = fs.readFileSync('./vite-project/dist/index.html','utf8');
+      const indexPath = vscode.Uri.joinPath(this._extensionUri, 'src', 'vite-project', 'dist', 'index.html');
+      let contentHtml = fs.readFileSync(indexPath.path, 'utf-8');
+      // 替换js
+      contentHtml = contentHtml.replace(/src="\/assets\//g, `src="${webview.asWebviewUri(vscode.Uri.file(
+        vscode.Uri.joinPath(this._extensionUri, 'src', 'vite-project', 'dist', 'assets').path
+      ))}/`);
+      // 替换css
+      contentHtml = contentHtml.replace(/href="\/assets\//g, `href="${webview.asWebviewUri(vscode.Uri.file(
+        vscode.Uri.joinPath(this._extensionUri, 'src', 'vite-project', 'dist', 'assets').path
+      ))}/`);
+      return contentHtml;
     } catch(err:any) {  
       console.log(err);
       vscode.window.showInformationMessage(err.message);
     }
-    return data;
+    return '';
   }
 
   public async getProjectDeps(path:string) {
