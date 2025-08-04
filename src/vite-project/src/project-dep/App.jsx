@@ -1,23 +1,34 @@
-/* eslint-disable no-undef */
-import { useState } from 'react'
+ 
+import { useState,useRef } from 'react'
 import { Table,Button } from 'antd';
 import './App.css'
 import { useEffect } from 'react';
 
+
+let vscodeApi = null;
+
+// 一个安全的获取函数，确保只调用 acquireVsCodeApi 一次
+function getVsCodeApi() {
+  if (!vscodeApi) {
+    try {
+      // eslint-disable-next-line no-undef
+      vscodeApi = acquireVsCodeApi();
+    } catch (e) {
+      console.error('Failed to acquire VS Code API:', e);
+    }
+  }
+  return vscodeApi;
+}
 function App() {
+  const vscode = useRef(getVsCodeApi()).current;
   const [dataSource, setDataSource] = useState([
     {
-      number: '1',
-      source: '胡彦斌',
-      version: 32,
-      address: '西湖区湖底公园1号',
-    },
-    {
-      number: 'source',
-      source: '胡彦祖',
-      version: 42,
-      address: '西湖区湖底公园1号',
-    },
+      tag: 'npm',
+      version: '1.0.0',
+      name: 'example-package',
+      isDeleting: 'idle',
+      isUpdating: 'idle'
+    }
   ]);
 
   const columns = [
@@ -60,8 +71,8 @@ function App() {
   }
 
   function actionDepSourceCode(item, action) {
+    console.log("actionDepSourceCode", item, action);
     // ✅ 安全检查
-    const vscode = acquireVsCodeApi();
     if (typeof vscode !== 'undefined' && vscode.postMessage) {
       vscode.postMessage({ type: action, value: item });
     }  else {
