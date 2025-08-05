@@ -104,7 +104,7 @@ export async function updateDep( path:string,
       if (error) {
         depItem.isUpdating = "failure";
         callFun && callFun(depItem, 'fail');
-        vscode.window.showErrorMessage(`执行 ${getNpmOrTnpm()} update ${isDev} ${depItem.value.name} 失败！`);
+        vscode.window.showErrorMessage(`执行 ${getNpmOrTnpm()} update ${isDev} ${depItem.value.name} 失败！${error.message}`);
       } else {
         depItem.isUpdating = "success";
         vscode.window.showInformationMessage(`执行 ${getNpmOrTnpm()} update ${isDev} ${depItem.value.name} 成功！`);
@@ -135,7 +135,7 @@ export function deleteDep(
     exec(`${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name}`,{ cwd},function(error) {
       if (error) {
         depItem.isDeleting = "failure";
-        vscode.window.showErrorMessage(`执行 ${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name} 失败！`);
+        vscode.window.showErrorMessage(`执行 ${getNpmOrTnpm()} uninstall ${isDev} ${depItem.value.name} 失败！${error.message}`);
         callFun && callFun(depItem, 'fail');
       } else {
         depItem.isDeleting = "success";

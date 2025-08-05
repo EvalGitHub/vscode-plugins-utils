@@ -1,5 +1,7 @@
 {
 	"compilerOptions": {
+    "jsx": "react",
+    "jsx": "react",
 		"module": "Node16",
 		"target": "ES2022",
 		"outDir": "out",
