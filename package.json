@@ -28,6 +28,21 @@
           "group": "project-dep"
         }
       ]
+    },
+    "configuration": {
+      "title": "vscode-plugin-utils",
+      "properties": {
+        "vscode-plugin-utils.packageHandlerUtils": {
+          "type": "string",
+          "default": "npm",
+          "description": "包管理工具",
+          "enum": [
+            "npm",
+            "pnpm",
+            "tnpm"
+          ]
+        }
+      }
     }
   },
   "scripts": {

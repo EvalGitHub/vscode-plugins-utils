@@ -71,15 +71,15 @@ export function viewDepSourceCode(
 }
 
 export function getNpmOrTnpm() {
-  let targetNpm = '';
+  const config = vscode.workspace.getConfiguration('vscode-plugin-utils');
+  let packageHandlerUtils = config.get("packageHandlerUtils", 'tnpm');
   try {
     // 使用which模块检查命令是否存在
-    which.sync("tnpm");
-    targetNpm = "tnpm";
+    which.sync(packageHandlerUtils);
   } catch (error) {
-    targetNpm = "npm";
+    vscode.window.showErrorMessage('未安装' + packageHandlerUtils + '，请安装后再试！');
   }
-  return targetNpm;
+  return packageHandlerUtils;
 }
 
 export async function updateDep( path:string,
