@@ -12,12 +12,12 @@ export default defineConfig({
     rollupOptions: {
       input: {
         // 定义多个入口页面
-        projectDep: resolve(__dirname, 'index.html'),
-        about: resolve(__dirname, 'about.html'),
+        projectDep: resolve(__dirname, "index.html"),
+        codeAiByQwen: resolve(__dirname, "code-ai-by-qwen.html"),
         // contact: resolve(__dirname, 'contact.html')
         // 更多页面...
         // dashboard: resolve(__dirname, 'dashboard/index.html')
-      }
-    }
-  }
-})
+      },
+    },
+  },
+});
