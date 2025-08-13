@@ -35,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
     getViewDepCodeProvider(),
-    getCodeAiByQwenSideBarViewProvider()
+    // getCodeAiByQwenSideBarViewProvider()
   );
 }
 
