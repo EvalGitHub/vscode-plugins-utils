@@ -13,7 +13,7 @@ function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
 		localResourceRoots: [vscode.Uri.joinPath(extensionUri)]
 	};
 }
-const DIST_DIR = "src/vite-project/dist";
+const DIST_DIR = "vite-project/dist";
 
 export class ViewDepCode implements vscode.WebviewViewProvider {
   public static readonly viewType = 'view.depCode';

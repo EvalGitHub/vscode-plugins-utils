@@ -9,3 +9,8 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 **/.vscode-test.*
+vite-project/node_modules/**
+vite-project/src/**
+vite-project/vite.config.ts
+vite-project/package.json
+vite-project/yarn.lock

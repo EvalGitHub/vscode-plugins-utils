@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
 			context.extensionUri as vscode.Uri,
 			"index.html"
 		);
-		return  vscode.commands.registerCommand("view-project-dep-source-code", (e) => {
+		return vscode.commands.registerCommand("view-project-dep", (e) => {
       console.log(e.fsPath);
       ViewDepCodeProvider.getProjectDeps(e.fsPath);
     });
@@ -35,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
     getViewDepCodeProvider(),
-    // getCodeAiByQwenSideBarViewProvider()
+    getCodeAiByQwenSideBarViewProvider()
   );
 }
 

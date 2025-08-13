@@ -11,7 +11,7 @@ function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
   };
 }
 
-const DIST_DIR = "src/vite-project/dist";
+const DIST_DIR = "vite-project/dist";
 export class CodeAiByQwenSideBarViewProvider implements vscode.WebviewViewProvider {
   // private _webPanelView?: vscode.WebviewPanel;
   public static readonly viewType = "CodeAiByQwenSideBarViewProvider";

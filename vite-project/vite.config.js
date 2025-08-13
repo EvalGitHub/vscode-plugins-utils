@@ -6,7 +6,9 @@ import react from '@vitejs/plugin-react'
 const __dirname = new URL('.', import.meta.url).pathname
 // https://vite.dev/config/
 export default defineConfig({
-  // outDir: resolve(dirname(fileURLToPath(import.meta.url)), 'src/webview-ui/dist'),
+  // 输出目录为根目录的dist
+  outDir: resolve(__dirname, "../dist"),
+  emptyOutDir: true, // 构建前清空该目录（可选）
   plugins: [react()],
   build: {
     rollupOptions: {
