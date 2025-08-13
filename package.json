@@ -1,10 +1,10 @@
 {
-  "name": "vscode-plugin-utils",
-  "displayName": "vscode-plugin-utils",
+  "name": "project-dep-view",
+  "displayName": "project-dep-view",
   "description": "",
   "publisher": "evel-vscode-plugins",
   "icon": "image/help_panel_tool_fail.png",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "engines": {
     "vscode": "^1.85.0"
   },
