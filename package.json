@@ -43,6 +43,24 @@
           ]
         }
       }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "code-ai-by-qwen",
+          "title": "code ai by qwen",
+          "icon": "image/ai-code-logo-light.svg"
+        }
+      ]
+    },
+    "views": {
+      "code-ai-by-qwen": [
+        {
+          "id": "code-ai-by-qwen-container",
+          "type": "webview",
+          "name": "code ai by qwen"
+        }
+      ]
     }
   },
   "scripts": {
@@ -71,3 +89,4 @@
   },
   "repository": "https://github.com/EvalGitHub/vscode-plugins-utils.git"
 }
+
