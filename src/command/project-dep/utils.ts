@@ -64,10 +64,33 @@ export function viewDepSourceCode(
   if (!fsExtra.existsSync(path)) {
     return vscode.window.showErrorMessage('node_modules不存在，请先安装依赖!');
   }
-  spawnSync("code", ['node_modules/' + depName], {
-    cwd,
-    stdio: 'inherit'
-  });
+  try {
+     let codePath;
+     try {
+       // 确保使用正确的PATH环境变量
+       const env = {...process.env};
+       env.PATH = '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin';
+       codePath = which.sync("code", {path: env.PATH});
+     } catch (error) {
+       return vscode.window.showErrorMessage(
+         "找不到 VS Code 命令行工具，请执行以下操作：\n" +
+         "1. 打开 VS Code\n" + 
+         "2. 按 Ctrl+Shift+P 打开命令面板\n" +
+         "3. 搜索并执行 'Shell Command: Install 'code' command in PATH'\n" +
+         "4. 重启 VS Code 使更改生效"
+       );
+     }
+     let res = spawnSync(codePath, ["node_modules/" + depName], {
+       cwd,
+       stdio: "inherit",
+     });
+     if (res.status !== 0) {
+      vscode.window.showErrorMessage("执行失败" + res.error?.stack);
+     }
+     console.log('res',res);
+  } catch (error) {
+    vscode.window.showErrorMessage("执行失败" + error);
+  }
 }
 
 export function getNpmOrTnpm() {
